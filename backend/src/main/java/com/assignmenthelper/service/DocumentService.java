@@ -45,7 +45,7 @@ public class DocumentService {
         // Save file locally
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
-        file.transferTo(filePath.toFile());
+        Files.copy(file.getInputStream(), filePath.toAbsolutePath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
         // Extract text if PDF, or just read if txt
         String extractedText = "";

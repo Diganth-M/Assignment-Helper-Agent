@@ -20,14 +20,12 @@ const Dashboard = () => {
 
     setLoading(true);
     try {
-      const response = await api.post('/documents/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const response = await api.post('/documents/upload', formData);
       // Redirect to document view with the ID
       navigate(`/document/${response.data.id}`);
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
+      console.error('Upload failed:', error.response?.data || error);
+      alert('Upload failed: ' + (error.response?.data || error.message));
     } finally {
       setLoading(false);
     }

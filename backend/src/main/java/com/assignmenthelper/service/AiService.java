@@ -24,6 +24,10 @@ public class AiService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String generateResponse(String systemPrompt, String userMessage) {
+        if ("your_api_key_here".equals(openaiApiKey) || openaiApiKey == null || openaiApiKey.trim().isEmpty()) {
+            return "This is a mock AI response. Please configure your OPENAI_API_KEY in application.properties or environment variables to get real AI-generated content.";
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(openaiApiKey);
