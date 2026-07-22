@@ -1,0 +1,131 @@
+{
+  "id": "python-basics",
+  "title": "Python Basics",
+  "description": "Learn Python syntax, variables, collections, conditions, loops, functions, modules, and exception handling.",
+  "topic": "PYTHON",
+  "estimatedReadingTime": "20 minutes",
+  "chapters": [
+    {
+      "id": "introduction",
+      "title": "1. Introduction",
+      "order": 1,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python is a popular programming language. It was created by Guido van Rossum, and released in 1991. It is used for web development (server-side), software development, mathematics, and system scripting."
+        }
+      ]
+    },
+    {
+      "id": "variables-and-data-types",
+      "title": "2. Variables and Data Types",
+      "order": 2,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python has no command for declaring a variable. A variable is created the moment you first assign a value to it."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "x = 5\ny = \"John\"\nprint(x)\nprint(y)"
+        }
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "3. Operators",
+      "order": 3,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python divides the operators in the following groups: Arithmetic, Assignment, Comparison, Logical, Identity, Membership, and Bitwise."
+        }
+      ]
+    },
+    {
+      "id": "conditions",
+      "title": "4. Conditions",
+      "order": 4,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python supports the usual logical conditions from mathematics."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "a = 33\nb = 200\nif b > a:\n  print(\"b is greater than a\")"
+        }
+      ]
+    },
+    {
+      "id": "loops",
+      "title": "5. Loops",
+      "order": 5,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python has two primitive loop commands: while loops and for loops."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "fruits = [\"apple\", \"banana\", \"cherry\"]\nfor x in fruits:\n  print(x)"
+        }
+      ]
+    },
+    {
+      "id": "lists-tuples-sets-dicts",
+      "title": "6. Lists, Tuples, Sets, Dictionaries",
+      "order": 6,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python provides four built-in data types that are used to store collections of data."
+        },
+        {
+          "type": "list-bullet",
+          "items": [
+            "List: ordered and changeable. Allows duplicate members.",
+            "Tuple: ordered and unchangeable. Allows duplicate members.",
+            "Set: unordered, unchangeable, and unindexed. No duplicate members.",
+            "Dictionary: ordered and changeable. No duplicate members."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "functions",
+      "title": "7. Functions",
+      "order": 7,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A function is a block of code which only runs when it is called."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "def my_function(fname):\n  print(fname + \" Refsnes\")\n\nmy_function(\"Emil\")"
+        }
+      ]
+    },
+    {
+      "id": "classes",
+      "title": "8. Classes",
+      "order": 8,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python is an object oriented programming language. Almost everything in Python is an object, with its properties and methods."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "code": "class MyClass:\n  x = 5\n\np1 = MyClass()\nprint(p1.x)"
+        }
+      ]
+    }
+  ]
+}

@@ -98,7 +98,7 @@ public class AiService {
     }
 
     public String explainChapter(String text, String language) {
-        String systemPrompt = "You are an educational assistant. Use only the supplied document content as the primary source. Do not introduce unrelated topics. If the document does not contain enough information, clearly state that the requested topic is not sufficiently covered. Format your explanation entirely as a list of bullet points. Do not write long paragraphs.";
+        String systemPrompt = "You are an expert educational assistant. Your goal is to provide a highly detailed, comprehensive, and in-depth explanation of the supplied document content. Break down complex concepts step-by-step, provide illustrative examples, and ensure the user gains a thorough understanding. Use clear headings, bullet points, and well-structured paragraphs to organize the information. Do not just summarize; elaborate extensively on the core topics.";
         return generateResponse(systemPrompt, text, language);
     }
 
@@ -109,12 +109,44 @@ public class AiService {
     }
 
     public String generateMCQs(String text, String language) {
-        String systemPrompt = "You are an educational assistant. Use only the supplied document content as the primary source to create up to 10 multiple choice questions (or as many as possible). Do not introduce unrelated topics. You MUST respond ONLY with a valid JSON array where each object has: 'question' (string), 'options' (array of exactly 4 strings), 'correctAnswer' (string, exactly matching one option), and 'explanation' (string). Never return plain text. If you cannot generate questions, return a single generic question in the exact JSON array format. Do not wrap in markdown blocks, just return the raw JSON array.";
+        if ("your_api_key_here".equals(geminiApiKey) || geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
+            StringBuilder mock = new StringBuilder("[\n");
+            for (int i = 1; i <= 15; i++) {
+                mock.append("  {\n");
+                mock.append("    \"question\": \"(Mock Question ").append(i).append(") What is the main purpose of an API key?\",\n");
+                mock.append("    \"options\": [\"To write HTML\", \"To access external AI services\", \"To style pages\", \"To compile Java\"],\n");
+                mock.append("    \"correctAnswer\": \"To access external AI services\",\n");
+                mock.append("    \"explanation\": \"Please configure your GEMINI_API_KEY in application.properties to get real AI-generated quizzes based on your document.\"\n");
+                mock.append("  }");
+                if (i < 15) {
+                    mock.append(",\n");
+                } else {
+                    mock.append("\n");
+                }
+            }
+            mock.append("]");
+            return mock.toString();
+        }
+        long seed = (long)(Math.random() * 1000000);
+        String systemPrompt = "You are an expert educational evaluator. Based ONLY on the supplied document content, generate at least 15 challenging multiple choice questions that test deep comprehension of the core subject matter.\n" +
+            "CRITICAL RULES:\n" +
+            "1. Do NOT ask meta-questions about the document itself (e.g. 'What is the main topic of this text?'). Ask questions about the actual concepts and facts.\n" +
+            "2. Generate completely NEW and DIFFERENT questions from any previous attempts. Use this random seed for uniqueness: " + seed + ".\n" +
+            "3. You MUST respond ONLY with a valid JSON array where each object has: 'question' (string), 'options' (array of exactly 4 strings), 'correctAnswer' (string, exactly matching one option), and 'explanation' (string).\n" +
+            "4. Never return plain text. Do not wrap in markdown blocks, just return the raw JSON array.";
         return generateResponse(systemPrompt, text, language);
     }
 
     public String generateVivaQuestions(String text, String language) {
-        String systemPrompt = "You are an educational assistant. Use only the supplied document content as the primary source to generate up to 10 challenging viva questions and sample answers. Do not introduce unrelated topics. If the document does not contain much information, generate as many as you can. Format your output as a numbered list of questions, where each question is followed by its sample answer formatted as bullet points.";
+        if ("your_api_key_here".equals(geminiApiKey) || geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
+            StringBuilder mock = new StringBuilder("### 🎓 Mock Viva Questions\n\n*Please configure your GEMINI_API_KEY in application.properties for real questions.*\n\n");
+            for (int i = 1; i <= 15; i++) {
+                mock.append(i).append(". **Can you explain the core concept number ").append(i).append("?**\n");
+                mock.append("   - This is the sample detailed answer for question ").append(i).append(".\n   - It helps demonstrate how the format should look.\n\n");
+            }
+            return mock.toString();
+        }
+        String systemPrompt = "You are an educational assistant. Use only the supplied document content as the primary source to generate at least 15 to 20 challenging viva questions and sample answers. Do not introduce unrelated topics. If the document does not contain much information, generate as many as you can. Format your output as a numbered list of questions, where each question is followed by its sample answer formatted as bullet points.";
         return generateResponse(systemPrompt, text, language);
     }
 
@@ -123,9 +155,61 @@ public class AiService {
         return generateResponse(systemPrompt, text, targetLanguage);
     }
 
+    public String extractTextFromImage(String base64Image, String mimeType) {
+        if ("your_api_key_here".equals(geminiApiKey) || geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
+            return "This is a mock OCR transcription. Please configure your GEMINI_API_KEY in application.properties to extract real text from images.";
+        }
 
+        String url = geminiApiUrl + "?key=" + geminiApiKey;
 
-    
+        Map<String, Object> requestBody = new HashMap<>();
+        List<Map<String, Object>> contents = new java.util.ArrayList<>();
+        
+        Map<String, Object> textPart = new HashMap<>();
+        textPart.put("text", "Please carefully transcribe all the text present in this image. Do not add any extra commentary or markdown formatting, just provide the raw text exactly as it appears.");
+        
+        Map<String, Object> inlineData = new HashMap<>();
+        inlineData.put("mimeType", mimeType);
+        inlineData.put("data", base64Image);
+        
+        Map<String, Object> imagePart = new HashMap<>();
+        imagePart.put("inlineData", inlineData);
+        
+        Map<String, Object> content = new HashMap<>();
+        content.put("parts", List.of(textPart, imagePart));
+        contents.add(content);
+        
+        requestBody.put("contents", contents);
+
+        Map<String, Object> generationConfig = new HashMap<>();
+        generationConfig.put("temperature", 0.1);
+        requestBody.put("generationConfig", generationConfig);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
+            Map<String, Object> responseBody = response.getBody();
+            if (responseBody != null && responseBody.containsKey("candidates")) {
+                List<Map<String, Object>> candidates = (List<Map<String, Object>>) responseBody.get("candidates");
+                if (!candidates.isEmpty()) {
+                    Map<String, Object> candidate = candidates.get(0);
+                    Map<String, Object> contentObj = (Map<String, Object>) candidate.get("content");
+                    List<Map<String, Object>> parts = (List<Map<String, Object>>) contentObj.get("parts");
+                    if (parts != null && !parts.isEmpty()) {
+                        return (String) parts.get(0).get("text");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error extracting text from image: " + e.getMessage();
+        }
+        return "Failed to extract text from image.";
+    }
+
     public Flux<String> generateChatStream(List<Map<String, String>> history, String context, String userPrompt, String language, String base64Image) {
         if ("your_api_key_here".equals(geminiApiKey) || geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
             return Flux.just("This is a mock AI response for chat. Configure GEMINI_API_KEY.");

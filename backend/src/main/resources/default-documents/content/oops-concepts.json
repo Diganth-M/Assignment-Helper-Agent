@@ -1,0 +1,64 @@
+{
+  "id": "oops-concepts",
+  "title": "OOP Concepts",
+  "description": "Learn classes, objects, inheritance, polymorphism, abstraction, encapsulation, interfaces, and real-world examples.",
+  "topic": "OOP",
+  "estimatedReadingTime": "30 minutes",
+  "chapters": [
+    {
+      "id": "class-and-object",
+      "title": "1. Class and Object",
+      "order": 1,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A class is a blueprint or template from which objects are created. An object is an instance of a class."
+        }
+      ]
+    },
+    {
+      "id": "encapsulation",
+      "title": "2. Encapsulation",
+      "order": 2,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Encapsulation is the mechanism of hiding of data implementation by restricting access to public methods."
+        }
+      ]
+    },
+    {
+      "id": "abstraction",
+      "title": "3. Abstraction",
+      "order": 3,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Data abstraction is the process of hiding certain details and showing only essential information to the user."
+        }
+      ]
+    },
+    {
+      "id": "inheritance",
+      "title": "4. Inheritance",
+      "order": 4,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Inheritance is a mechanism in which one object acquires all the properties and behaviors of a parent object."
+        }
+      ]
+    },
+    {
+      "id": "polymorphism",
+      "title": "5. Polymorphism",
+      "order": 5,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Polymorphism means 'many forms', and it occurs when we have many classes that are related to each other by inheritance."
+        }
+      ]
+    }
+  ]
+}

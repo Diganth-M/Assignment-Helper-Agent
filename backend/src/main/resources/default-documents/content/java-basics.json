@@ -1,0 +1,240 @@
+{
+  "id": "java-basics",
+  "title": "Java Basics",
+  "description": "Learn Java syntax, variables, data types, operators, loops, arrays, methods, classes, and exception handling.",
+  "topic": "JAVA",
+  "estimatedReadingTime": "25 minutes",
+  "chapters": [
+    {
+      "id": "introduction-to-java",
+      "title": "1. Introduction to Java",
+      "order": 1,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let programmers write once, run anywhere (WORA), meaning that compiled Java code can run on all platforms that support Java without the need for recompilation."
+        }
+      ]
+    },
+    {
+      "id": "features-of-java",
+      "title": "2. Features of Java",
+      "order": 2,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Java has several important features:"
+        },
+        {
+          "type": "list-bullet",
+          "items": [
+            "Object-Oriented: In Java, everything is an Object. Java can be easily extended since it is based on the Object model.",
+            "Platform Independent: Unlike many other programming languages including C and C++, when Java is compiled, it is not compiled into platform specific machine, rather into platform independent byte code.",
+            "Simple: Java is designed to be easy to learn.",
+            "Secure: With Java's secure feature it enables to develop virus-free, tamper-free systems.",
+            "Architecture-neutral: Java compiler generates an architecture-neutral object file format."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jdk-jre-jvm",
+      "title": "3. JDK, JRE, and JVM",
+      "order": 3,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Understanding the core components of the Java environment:"
+        },
+        {
+          "type": "list-bullet",
+          "items": [
+            "JVM (Java Virtual Machine): An abstract machine that provides a runtime environment in which Java bytecode can be executed.",
+            "JRE (Java Runtime Environment): Provides the libraries, the JVM, and other components to run applets and applications written in the Java programming language.",
+            "JDK (Java Development Kit): Contains JRE along with development tools like compilers, debuggers, etc."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "variables-and-data-types",
+      "title": "4. Variables and Data Types",
+      "order": 4,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Java provides two categories of data types: primitive and non-primitive."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "int myNum = 5;               // Integer (whole number)\nfloat myFloatNum = 5.99f;    // Floating point number\nchar myLetter = 'D';         // Character\nboolean myBool = true;       // Boolean\nString myText = \"Hello\";     // String"
+        }
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "5. Operators",
+      "order": 5,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Operators are used to perform operations on variables and values."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "int sum1 = 100 + 50;        // 150\nint sum2 = sum1 + 250;      // 400\nint sum3 = sum2 + sum2;     // 800"
+        }
+      ]
+    },
+    {
+      "id": "conditional-statements",
+      "title": "6. Conditional Statements",
+      "order": 6,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Java has the following conditional statements:"
+        },
+        {
+          "type": "list-bullet",
+          "items": [
+            "Use if to specify a block of code to be executed, if a specified condition is true",
+            "Use else to specify a block of code to be executed, if the same condition is false",
+            "Use else if to specify a new condition to test, if the first condition is false",
+            "Use switch to specify many alternative blocks of code to be executed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loops",
+      "title": "7. Loops",
+      "order": 7,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Loops can execute a block of code as long as a specified condition is reached."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "for (int i = 0; i < 5; i++) {\n  System.out.println(i);\n}"
+        }
+      ]
+    },
+    {
+      "id": "arrays",
+      "title": "8. Arrays",
+      "order": 8,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Arrays are used to store multiple values in a single variable."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "String[] cars = {\"Volvo\", \"BMW\", \"Ford\", \"Mazda\"};\nSystem.out.println(cars[0]); // Outputs Volvo"
+        }
+      ]
+    },
+    {
+      "id": "strings",
+      "title": "9. Strings",
+      "order": 9,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Strings are used for storing text. A String variable contains a collection of characters surrounded by double quotes."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "String greeting = \"Hello\";\nSystem.out.println(\"The length of the txt string is: \" + greeting.length());"
+        }
+      ]
+    },
+    {
+      "id": "methods",
+      "title": "10. Methods",
+      "order": 10,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A method is a block of code which only runs when it is called."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "public class Main {\n  static void myMethod() {\n    System.out.println(\"I just got executed!\");\n  }\n\n  public static void main(String[] args) {\n    myMethod();\n  }\n}"
+        }
+      ]
+    },
+    {
+      "id": "classes-and-objects",
+      "title": "11. Classes and Objects",
+      "order": 11,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Java is an object-oriented programming language. Everything in Java is associated with classes and objects, along with its attributes and methods."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "public class Main {\n  int x = 5;\n\n  public static void main(String[] args) {\n    Main myObj = new Main();\n    System.out.println(myObj.x);\n  }\n}"
+        }
+      ]
+    },
+    {
+      "id": "constructors-and-oop",
+      "title": "12. Constructors, Inheritance, Polymorphism",
+      "order": 12,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A constructor in Java is a special method that is used to initialize objects. Inheritance lets us inherit attributes and methods from another class. Polymorphism uses those methods to perform different tasks."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "class Animal {\n  public void animalSound() {\n    System.out.println(\"The animal makes a sound\");\n  }\n}\n\nclass Pig extends Animal {\n  public void animalSound() {\n    System.out.println(\"The pig says: wee wee\");\n  }\n}"
+        }
+      ]
+    },
+    {
+      "id": "exception-handling",
+      "title": "13. Exception Handling",
+      "order": 13,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "When an error occurs, Java will normally stop and generate an error message. The try statement allows you to define a block of code to be tested for errors."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "try {\n  int[] myNumbers = {1, 2, 3};\n  System.out.println(myNumbers[10]);\n} catch (Exception e) {\n  System.out.println(\"Something went wrong.\");\n}"
+        }
+      ]
+    },
+    {
+      "id": "collections-basics",
+      "title": "14. Collections Basics",
+      "order": 14,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "The Java Collections Framework provides a set of interfaces and classes to implement various data structures and algorithms."
+        },
+        {
+          "type": "code",
+          "language": "java",
+          "code": "import java.util.ArrayList;\n\nArrayList<String> cars = new ArrayList<String>();\ncars.add(\"Volvo\");\ncars.add(\"BMW\");"
+        }
+      ]
+    }
+  ]
+}

@@ -80,7 +80,7 @@ const Dashboard = () => {
               <input 
                 id="file-upload"
                 type="file" 
-                accept=".pdf,.txt" 
+                accept=".pdf,.txt,.png,.jpg,.jpeg" 
                 style={{ display: 'none' }} 
                 onChange={handleFileChange}
               />
@@ -88,7 +88,7 @@ const Dashboard = () => {
               {file ? (
                 <p style={{ color: 'var(--success)', fontWeight: 'bold' }}>{file.name} selected</p>
               ) : (
-                <p style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8)', fontWeight: '500' }}>Click to browse or drag and drop a file here</p>
+                <p style={{ textShadow: '0 1px 2px rgba(0,0,0,0.8)', fontWeight: '500' }}>Click to browse or drag and drop a Document or Image file here</p>
               )}
             </div>
             

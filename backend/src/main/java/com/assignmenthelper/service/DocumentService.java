@@ -59,10 +59,18 @@ public class DocumentService {
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath.toAbsolutePath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
-        // Extract text if PDF, or just read if txt
+        // Extract text if PDF, or image, or just read if txt
         String extractedText = "";
-        if (file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
+        String originalFilename = file.getOriginalFilename().toLowerCase();
+        
+        if (originalFilename.endsWith(".pdf")) {
             extractedText = pdfService.extractTextFromPdf(file);
+        } else if (originalFilename.endsWith(".png") || originalFilename.endsWith(".jpg") || originalFilename.endsWith(".jpeg")) {
+            byte[] bytes = file.getBytes();
+            String base64 = java.util.Base64.getEncoder().encodeToString(bytes);
+            String mimeType = "image/jpeg";
+            if (originalFilename.endsWith(".png")) mimeType = "image/png";
+            extractedText = aiService.extractTextFromImage(base64, mimeType);
         } else {
             extractedText = new String(file.getBytes());
         }

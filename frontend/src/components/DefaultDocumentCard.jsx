@@ -78,13 +78,22 @@ const DefaultDocumentCard = ({ id, title, description, topic, icon, chapters, re
         <span>📄 {fileType}</span>
       </div>
       
-      <button 
-        className="btn btn-primary"
-        style={{ marginTop: '0.5rem', width: '100%' }}
-        onClick={(e) => { e.stopPropagation(); navigate(`/default-documents/${id}`); }}
-      >
-        Open & Analyze
-      </button>
+      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', width: '100%' }}>
+        <button 
+          className="btn btn-primary"
+          style={{ flex: 1 }}
+          onClick={(e) => { e.stopPropagation(); navigate(`/default-documents/${id}/read`); }}
+        >
+          Read Content
+        </button>
+        <button 
+          className="btn btn-secondary"
+          style={{ flex: 1 }}
+          onClick={(e) => { e.stopPropagation(); navigate(`/default-documents/${id}`); }}
+        >
+          Analyze
+        </button>
+      </div>
     </div>
   );
 };

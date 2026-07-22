@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Mail, CheckCircle, XCircle, Loader2, X } from 'lucide-react';
 import './EmailPromptModal.css';
 
 const EmailPromptModal = ({ isOpen, onClose, onConfirm, contentType }) => {
@@ -32,6 +32,15 @@ const EmailPromptModal = ({ isOpen, onClose, onConfirm, contentType }) => {
         
         {step === 'initial' && (
           <div className="modal-content text-center">
+            <button 
+              onClick={handleClose}
+              style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: '#cbd5e1', cursor: 'pointer', padding: '4px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+              onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+              title="Close"
+            >
+              <X size={20} />
+            </button>
             <Mail size={48} className="modal-icon text-primary mb-4" />
             <h3 className="modal-title">📧 Send this to your Email?</h3>
             <p className="modal-text">Your generated <b>{contentType}</b> is ready.</p>

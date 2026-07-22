@@ -1,0 +1,58 @@
+{
+  "id": "sql-basics",
+  "title": "SQL Basics",
+  "description": "Learn databases, tables, SQL queries, CRUD operations, joins, constraints, aggregate functions, subqueries, and normalization.",
+  "topic": "SQL",
+  "estimatedReadingTime": "25 minutes",
+  "chapters": [
+    {
+      "id": "dbms-rdbms",
+      "title": "1. DBMS and RDBMS",
+      "order": 1,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A Database Management System (DBMS) is a software that allows creation, definition and manipulation of database. RDBMS stands for Relational Database Management System."
+        }
+      ]
+    },
+    {
+      "id": "tables-rows-columns",
+      "title": "2. Tables, Rows, and Columns",
+      "order": 2,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A table is a collection of related data held in a structured format within a database. It consists of columns, and rows."
+        }
+      ]
+    },
+    {
+      "id": "crud-operations",
+      "title": "3. CRUD Operations",
+      "order": 3,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Create (INSERT), Read (SELECT), Update (UPDATE), and Delete (DELETE)."
+        },
+        {
+          "type": "code",
+          "language": "sql",
+          "code": "SELECT * FROM Customers;"
+        }
+      ]
+    },
+    {
+      "id": "joins",
+      "title": "4. Joins",
+      "order": 4,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "A JOIN clause is used to combine rows from two or more tables, based on a related column between them."
+        }
+      ]
+    }
+  ]
+}

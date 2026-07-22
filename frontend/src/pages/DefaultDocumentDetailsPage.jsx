@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { defaultDocuments } from '../data/defaultDocuments';
 import api from '../services/api';
 
-const DefaultDocumentPreview = () => {
+const DefaultDocumentDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [analyzing, setAnalyzing] = useState(false);
@@ -51,10 +51,14 @@ const DefaultDocumentPreview = () => {
       navigate(`/document/${documentId}`);
     } catch (error) {
       console.error('Failed to analyze default document:', error);
-      alert('Analysis failed: ' + (error.response?.data || error.message));
+      alert('Analysis failed: ' + (error.response?.data?.error || error.response?.data || error.message));
       setAnalyzing(false);
       setProgressStatus('');
     }
+  };
+
+  const handleRead = () => {
+    navigate(`/default-documents/${id}/read`);
   };
 
   return (
@@ -64,14 +68,40 @@ const DefaultDocumentPreview = () => {
       margin: '0 auto',
       minHeight: '100%'
     }}>
-      <button 
-        className="btn btn-secondary" 
-        onClick={() => navigate('/default-documents')}
-        style={{ marginBottom: '2rem' }}
-        disabled={analyzing}
-      >
-        ← Back to Default Documents
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
+        <button 
+          onClick={() => navigate('/default-documents')}
+          style={{ 
+            background: 'rgba(255,255,255,0.1)', 
+            border: '1px solid rgba(255,255,255,0.2)', 
+            color: '#fff', 
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '0.75rem',
+            borderRadius: '50%',
+            transition: 'all 0.2s ease',
+            marginRight: '1rem'
+          }}
+          disabled={analyzing}
+          title="Back to Default Documents"
+          onMouseOver={(e) => {
+             e.currentTarget.style.background = 'var(--accent-primary)';
+             e.currentTarget.style.borderColor = 'var(--accent-primary)';
+          }}
+          onMouseOut={(e) => {
+             e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <span style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Back to Default Documents</span>
+      </div>
 
       <div style={{
         background: 'rgba(30, 41, 59, 0.7)',
@@ -100,6 +130,9 @@ const DefaultDocumentPreview = () => {
           
           <div style={{ flex: 1, minWidth: '300px' }}>
             <h1 style={{ margin: '0 0 1rem 0', color: '#fff', fontSize: '2.5rem' }}>{document.title}</h1>
+            <h2 style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', fontWeight: 'normal', margin: '0 0 1.5rem 0' }}>
+              Read the complete built-in learning document or analyze it to generate personalized study materials.
+            </h2>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
               <span style={{ background: 'rgba(124, 58, 237, 0.2)', color: 'var(--accent-primary)', padding: '4px 12px', borderRadius: '4px', fontWeight: 'bold' }}>
                 {document.topic}
@@ -157,9 +190,12 @@ const DefaultDocumentPreview = () => {
             `}</style>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-            <button className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }} onClick={handleAnalyze}>
-              Analyze and Continue
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+            <button className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }} onClick={handleRead}>
+              Read Content
+            </button>
+            <button className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }} onClick={handleAnalyze}>
+              Analyze & Generate
             </button>
           </div>
         )}
@@ -168,4 +204,4 @@ const DefaultDocumentPreview = () => {
   );
 };
 
-export default DefaultDocumentPreview;
+export default DefaultDocumentDetailsPage;

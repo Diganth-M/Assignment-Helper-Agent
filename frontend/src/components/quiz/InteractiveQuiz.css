@@ -1,7 +1,7 @@
 .quiz-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 16px;
   color: #fff;
   font-family: inherit;
 }
@@ -10,7 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .quiz-progress-bar-container {
@@ -18,7 +18,7 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .quiz-progress-bar {
@@ -40,18 +40,18 @@
 
 .quiz-question-card {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 32px;
-  margin-bottom: 40px;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
   animation: fadeIn 0.3s ease;
 }
 
 .quiz-question-text {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   line-height: 1.4;
 }
 
@@ -64,9 +64,9 @@
 .quiz-option {
   background: rgba(255, 255, 255, 0.08);
   border: 2px solid transparent;
-  border-radius: 16px;
-  padding: 20px 24px;
-  font-size: 20px;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 18px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.25s ease;

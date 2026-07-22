@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import EmailPromptModal from '../components/common/EmailPromptModal';
 import { MessageCircle, Maximize2, Minimize2 } from 'lucide-react';
@@ -13,6 +13,7 @@ import { useChatbot } from '../context/ChatbotContext';
 
 const DocumentView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [document, setDocument] = useState(null);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,8 +27,8 @@ const DocumentView = () => {
   const { isChatOpen, openChat, setCurrentContext, setUsePageContext } = useChatbot();
   
   // Email Modal State
-  const [showEmailModal, setShowEmailModal] = useState(false);
   const [latestGeneratedContent, setLatestGeneratedContent] = useState(null);
+  const [fullScreenEmailDismissed, setFullScreenEmailDismissed] = useState(true);
   
   const [generationLanguage, setGenerationLanguage] = useState('English');
   const [translating, setTranslating] = useState(false);
@@ -46,6 +47,14 @@ const DocumentView = () => {
       setLoading(false);
       return;
     }
+    
+    // Clear state from previous document
+    setHistory([]);
+    setDocument(null);
+    setLatestGeneratedContent(null);
+    setFullScreenEmailDismissed(true);
+    setAdditionalPrompt('');
+    
     loadData();
   }, [id]);
 
@@ -155,7 +164,7 @@ const DocumentView = () => {
         contentType: type,
         topic: document?.title || 'Study Material'
       });
-      setShowEmailModal(true);
+      setFullScreenEmailDismissed(false);
       
       // Auto full screen when generating is done for better reading experience
       setIsFullScreen(true);
@@ -171,6 +180,10 @@ const DocumentView = () => {
   const handleSendEmail = async () => {
     if (!latestGeneratedContent) throw new Error("No content to send");
     await api.post('/agent/email-content', latestGeneratedContent);
+    // After successful send, clear it so the prompt doesn't stick around
+    setTimeout(() => {
+        setLatestGeneratedContent(null);
+    }, 2000);
   };
 
   const currentTypeHistory = (history || []).filter(h => h?.type?.toLowerCase() === activeTab);
@@ -275,9 +288,69 @@ const DocumentView = () => {
   const renderMainContent = () => (
     <div className="glass-card" style={{ height: isFullScreen ? '100vh' : '100%', display: 'flex', flexDirection: 'column', overflowY: 'auto', ...fullScreenStyle }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ textTransform: 'capitalize', color: 'var(--accent-primary)', margin: 0 }}>
-          AI Tutor: {activeTab}
-        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.25rem' }}>
+            <button 
+              onClick={() => navigate(-1)}
+              style={{ 
+                background: 'transparent', 
+                border: 'none', 
+                color: 'var(--text-secondary)', 
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '8px',
+                borderRadius: '8px',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                e.currentTarget.style.color = 'var(--text-primary)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'var(--text-secondary)';
+              }}
+              title="Go Back"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <button 
+              onClick={() => navigate(1)}
+              style={{ 
+                background: 'transparent', 
+                border: 'none', 
+                color: 'var(--text-secondary)', 
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '8px',
+                borderRadius: '8px',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                e.currentTarget.style.color = 'var(--text-primary)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'var(--text-secondary)';
+              }}
+              title="Go Forward"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+          <h2 style={{ textTransform: 'capitalize', color: 'var(--accent-primary)', margin: 0 }}>
+            AI Tutor: {activeTab}
+          </h2>
+        </div>
         <button
           onClick={() => setIsFullScreen(!isFullScreen)}
           style={{
@@ -307,21 +380,6 @@ const DocumentView = () => {
       
 
 
-      {activeTab === 'project-planner' && (
-        <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
-          <h3 style={{ color: '#fff', marginBottom: '1rem' }}>Project Architect</h3>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem' }}>
-            Generate a full architectural plan, tech stack, database schema, and API endpoints for a project based on this document's concepts.
-          </p>
-          <button 
-            className="btn btn-primary" 
-            onClick={() => window.location.href = `/project-planner?documentId=${id}`}
-          >
-            Open Project Planner
-          </button>
-        </div>
-      )}
-
       {activeTab === 'assignment' && (
         <div className="form-group">
           <label className="form-label">Questions (Optional)</label>
@@ -336,7 +394,7 @@ const DocumentView = () => {
       )}
       
       {['explanation', 'assignment', 'mcq', 'viva'].includes(activeTab) && (
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
           <button 
             className="btn btn-primary" 
             style={{ width: 'fit-content' }}
@@ -364,20 +422,52 @@ const DocumentView = () => {
       )}
       
       {['explanation', 'assignment', 'mcq', 'viva'].includes(activeTab) && (
-        <div style={{ flex: 1, overflowY: 'auto' }} onMouseUp={handleMouseUp}>
+        <div style={{ flex: 1, overflowY: 'auto', paddingRight: '0.5rem' }} onMouseUp={handleMouseUp}>
           {currentTypeHistory.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {currentTypeHistory.map((item, idx) => (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {currentTypeHistory.map((item, idx) => {
+                const displayPrompt = item.prompt ? item.prompt.replace(/ Respond ONLY with a valid JSON array.*/, '').trim() : '';
+                return (
                 <div key={idx} style={{ 
                   background: 'rgba(0,0,0,0.2)', 
-                  padding: '1.5rem', 
+                  padding: '1.25rem', 
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid var(--glass-border)'
                 }}>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                    Generated on {new Date(item.createdAt).toLocaleString()}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                      Generated on {new Date(item.createdAt).toLocaleString()}
+                    </div>
+                    <button
+                      style={{ 
+                        padding: '4px 8px', 
+                        fontSize: '0.8rem', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '6px', 
+                        background: 'rgba(255,255,255,0.05)', 
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        color: 'var(--text-primary)',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                      onClick={() => {
+                        setLatestGeneratedContent({
+                          content: item.output,
+                          contentType: activeTab,
+                          topic: document?.title || 'Study Material'
+                        });
+                        setFullScreenEmailDismissed(false);
+                      }}
+                      onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                      Email this
+                    </button>
                   </div>
-                  {item.prompt && <div style={{ marginBottom: '1rem', fontStyle: 'italic' }}>Q: {item.prompt}</div>}
+                  {displayPrompt && <div style={{ marginBottom: '1rem', fontStyle: 'italic' }}>Q: {displayPrompt}</div>}
                   <div className="chat-bubble ai-message" style={{ background: 'transparent', border: 'none', padding: 0 }}>
                     {activeTab === 'mcq' ? (
                       <InteractiveQuiz data={item.output} onReset={() => handleGenerate('mcq')} />
@@ -458,7 +548,8 @@ const DocumentView = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="text-center" style={{ color: 'var(--text-secondary)', padding: '3rem' }}>
@@ -503,7 +594,7 @@ const DocumentView = () => {
             </h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1.5rem', flex: 1 }}>
-              {['explanation', 'assignment', 'mcq', 'viva', 'project-planner'].map(tab => (
+              {['explanation', 'assignment', 'mcq', 'viva'].map(tab => (
                 <button
                   key={tab}
                   className={`btn ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
@@ -515,20 +606,20 @@ const DocumentView = () => {
               ))}
             </div>
             
-            {/* Email Prompt positioned in left sidebar */}
-            <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
-              <EmailPromptModal 
-                isOpen={showEmailModal} 
-                onClose={() => setShowEmailModal(false)}
-                onConfirm={handleSendEmail}
-                contentType={latestGeneratedContent?.contentType}
-              />
-            </div>
+            
           </div>
         )}
         
         {isFullScreen ? createPortal(renderMainContent(), window.document.body) : renderMainContent()}
       </div>
+
+      {/* Global Email Prompt Modal Overlay */}
+      <EmailPromptModal 
+        isOpen={!!latestGeneratedContent && !fullScreenEmailDismissed} 
+        onClose={() => setFullScreenEmailDismissed(true)}
+        onConfirm={handleSendEmail}
+        contentType={latestGeneratedContent?.contentType}
+      />
     </div>
   );
 };

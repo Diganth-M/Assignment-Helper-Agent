@@ -12,7 +12,8 @@ import VerifyOTP from './pages/VerifyOTP';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import DefaultDocumentsPage from './pages/DefaultDocumentsPage';
-import DefaultDocumentPreview from './pages/DefaultDocumentPreview';
+import DefaultDocumentDetailsPage from './pages/DefaultDocumentDetailsPage';
+import DocumentReaderPage from './pages/DocumentReaderPage';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import ChatbotPanel from './components/chatbot/ChatbotPanel';
@@ -69,6 +70,22 @@ const Layout = ({ children }) => {
   );
 };
 
+const FullScreenLayout = ({ children }) => {
+  return (
+    <div className="app-container" style={{
+      height: '100vh',
+      overflow: 'hidden',
+      display: 'flex',
+      backgroundColor: '#0f172a'
+    }}>
+      <div style={{ flex: 1, height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        {children}
+      </div>
+      <ChatbotPanel />
+    </div>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -85,7 +102,8 @@ function App() {
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
                 <Route path="/default-documents" element={<ProtectedRoute><Layout><DefaultDocumentsPage /></Layout></ProtectedRoute>} />
-                <Route path="/default-documents/:id" element={<ProtectedRoute><Layout><DefaultDocumentPreview /></Layout></ProtectedRoute>} />
+                <Route path="/default-documents/:id" element={<ProtectedRoute><Layout><DefaultDocumentDetailsPage /></Layout></ProtectedRoute>} />
+                <Route path="/default-documents/:id/read" element={<ProtectedRoute><FullScreenLayout><DocumentReaderPage /></FullScreenLayout></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
                 <Route path="/document/:id" element={<ProtectedRoute><Layout><DocumentView /></Layout></ProtectedRoute>} />
                 <Route path="/document/:id/generate" element={<ProtectedRoute><Layout><DocumentView /></Layout></ProtectedRoute>} />
